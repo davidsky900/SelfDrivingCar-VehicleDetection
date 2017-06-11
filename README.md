@@ -57,9 +57,9 @@ Since the classifier was trained to classifier square image patch with 64 x 64 p
 * scales used = 2, 1.25, 0.75
 * cell per step = 2
 
-Here are some example images:
+Here are some examples:
 ![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/slideWin1.png)
-![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/slideWin6.png)
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/slideWin5.png)
 
 ---
 
