@@ -21,8 +21,8 @@ The top row is 10 pictures of cars whereas the bottom row is 10 pictures of non-
 ### a. Extract features (HOG and Color features)
 The pictures loaded from Step 0 are mixed, randomly shuffled and splited into training and In order to extract features can be used for training the classfier, two types of feature are used. The first type of feature is the Histogram of Gradient (HOG feature) of the picture. The HOG feature is extracted by the function of  `skimage.hog()`, and the parameters are tuned in a trial and error process. There are two objectives need to be traded-off during the tuning
 
-a. to obtain high classification accuracy
-b. to lower computational burden
+* to obtain high classification accuracy
+* to lower computational burden
 
 These two objective are competing with each other as high accuracy requires more features to be converted and will increase the computational burden. After tuning the final parameters are chosen as below:
 * `orientations` = 16
