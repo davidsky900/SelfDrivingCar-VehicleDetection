@@ -17,78 +17,94 @@ In order to train classifier that can be used to detect the vehicle, a data set 
 ![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/dataDemo.png)
 
 The top row is 10 pictures of cars whereas the bottom row is 10 pictures of non-car objects. 
+* Total number of car pictures: 8792
+* Total number of non-car pictures: 8968
 
 ---
 
-###Histogram of Oriented Gradients (HOG)
+### Step 1: Extract features and train classifier
+### a. Extract features (HOG and Color features)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+The pictures loaded from Step 0 are mixed, randomly shuffled and splited into training and In order to extract features can be used for training the classfier, two types of feature are used. The first type of feature is the Histogram of Gradient (HOG feature) of the picture. The HOG feature is extracted by the function of  `skimage.hog()`, and the parameters are tuned in a trial and error process. There are two objectives need to be traded-off during the tuning
 
-The code for this step is contained in the first code cell of the IPython notebook (or in lines # through # of the file called `some_file.py`).  
+a. to obtain high classification accuracy
+b. to lower computational burden
 
-I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
+These two objective are competing with each other as high accuracy requires more features to be converted and will increase the computational burden. After tuning the final parameters are chosen as below:
 
-![alt text][image1]
+* `orientations` = 16
+* `pixels_per_cell` = 8
+* `cells_per_block` = 2 x 2
 
-I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
+The second type of feature is the histogram of color. The pictures are converted into `YCrCb` color space and the histogram of color are concatenated. The parameters are:
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+* number of bins = 32
+* range of bins = (0 255)
+
+The HOG feature and color features are concatenated into 1 dimensional vector, and normalized within the entire data set and splitted into training and validation set. The final format of the proccessed feature vectors are listed below:
+
+* dimension of 1 feature vector: 1 x 9504
+* number of training feature vectors: 13320
+* number of validation feature vectors: 4440
+
+The following pictures demonstrate the originial image (left), the extracted HOG feature (middle) and the concatenated and normalized feature vector. 
+
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/feaatureCar2842.png)
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/feaatureNonCar3108.png)
 
 
-![alt text][image2]
+b. Train classifier
 
-####2. Explain how you settled on your final choice of HOG parameters.
+I trained a linear SVM using `sklearn.svm`. The validation accuracy achieved 99.2 %. 
 
-I tried various combinations of parameters and...
+### Step 2: Sliding window search
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### a. Description of method
 
-I trained a linear SVM using...
+In order to detect the vehicle within the image, a sliding window search approach is used. Since the car only appears in a certain portion of the image, it is more efficient to divide the image into several regions and perform slide window search within the region. 
 
-###Sliding Window Search
+The region chosen are shown as the green boxes in the picture below:
 
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/slideWin0.png)
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
 
-![alt text][image3]
+#### b. Examples and optimization
+Since the classifier was trained to classifier square image patch with 64 x 64 pixels, the windows need to be scaled to fit the dimension. In this case, the parameters used are listed below:
 
-####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+* scales used = 2, 1.25, 0.75
+* cell per step = 2
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Here are some example images:
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/slideWin1.png)
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/slideWin6.png)
 
-![alt text][image4]
 ---
 
 ### Video Implementation
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 Here's a [link to my video result](./project_video.mp4)
 
+#### a. Build pipeline for single image
+In order to merger all the positive detections into correc number of detections in each frame of video. A pipeline of detection for single image is built. In this pipeline, all the positive detections are merged as heat map, which essientially is a vote of all the pixels with positive detection. The heat map is then converted into labels which indicates the location and occupation of the car within the image. The convertion from heat map into lables are done by `scipy.ndimage.measurements.label()`. The labels is shown with a bounding boxes. Below are some examples of the pipeline for test images:
 
-####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/pipeline0.png)
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/pipeline1.png)
+![alt text](https://github.com/davidsky900/SelfDrivingCar-VehicleDetection/blob/master/figures/pipeline3.png)
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+The left is the images with positive detections, the middle is the heat map created fro detections and the right is the final detection of cars generated from heat map. 
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+#### b. Eliminate false detection and smooth heat map
+In order to smooth the detection and reduce the false detection, the heat maps are stored up to 12 frame and merged to smooth the detection. A threshold hold is also applied to filter out false detections. The relavent parameters are listed below:
 
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
-
-
+* Number of buffered heat maps = 12
+* Minimun detections to be counted into heat map = 2
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+The presented algorithm works decent with detection of vehicle, however there are few challenges needs to be addressed in the future works. 
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+a. The bounding box indicating the detection of vehicle still has some jitter, this is caused by the fact the edge of the heat map will change frame by frame. This could be addressed by increasing more levels of region and different levels of scales of search windown, which will potentially increase the density of the heat map and gives higher level of confidence of the exact dimenson of the occupation of the car in the scene. This inevitablly increase the computational burden and will needed to be rigrously explored with more powerful computational capability. 
 
+b. When muiltiple vehicle overlaps in a single frame, the classifier might be lump them together under current algorithm. To address this issue. The detectioin result can return certain information that is unique with detected car, for instance, color of the car, so that when creating heat map and labels these positive result can be seperated from each other. 
