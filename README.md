@@ -54,7 +54,7 @@ In order to detect the vehicle within the image, a sliding window search approac
 
 ### b. Examples and optimization
 Since the classifier was trained to classifier square image patch with 64 x 64 pixels, the windows need to be scaled to fit the dimension. In this case, the parameters used are listed below:
-* scales used = 2, 1.25, 0.75
+* scales used = 3, 1.25, 0.8
 * cell per step = 2
 
 Here are some examples:
