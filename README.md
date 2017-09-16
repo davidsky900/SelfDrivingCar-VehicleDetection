@@ -1,9 +1,16 @@
-# Self-Driving Car - Vehicle Detection
-This project aims to develop a algorithm to detect and track vehicle during the driving. The steps of this algorithm are described below:
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# Udacity Self-Driving Car Engineer Nanodegree
+# Project: Vehicle Detection and Tracking
+---
+## Summary of Project 
+In this project, a  detection algorithm is in Python with computer vision and supervised machine learning to detect and tracking vehicles in videos shot by front facing camera in car. The steps of this algorithm are described below:
+
 * Perform a Histogram of Oriented Gradients (HOG) feature and color features extraction on a labeled training set of images and train a classifier Linear SVM classifier
 * Implement a sliding-window technique and use the trained classifier to search for vehicles in images.
 * Implement a pipeline on a video stream and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
 * Estimate a bounding box for vehicles detected.
+
+The algorithm is implemented and tested on a testing image set and different highway driving videos, and successfully demonstrates a detection accuracy of with 99.2 % in the testing image set, and a good vehicle detection and tracking capability in the testing videos. 
 
 ---
 
