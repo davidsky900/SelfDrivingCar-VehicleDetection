@@ -1,6 +1,6 @@
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
-# Udacity Self-Driving Car Engineer Nanodegree
 # Project: Vehicle Detection and Tracking
+### Udacity Self-Driving Car Engineer Nanodegree
+
 ---
 ## Summary of Project 
 In this project, a  detection algorithm is in Python with computer vision and supervised machine learning to detect and tracking vehicles in videos shot by front facing camera in car. The steps of this algorithm are described below:
