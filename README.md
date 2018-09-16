@@ -11,6 +11,8 @@ In this project, a  detection algorithm is in Python with computer vision and su
 
 The algorithm is implemented and tested on a testing image set and different highway driving videos, and successfully demonstrates a detection accuracy of with 99.2 % in the testing image set, and a good vehicle detection and tracking capability in the testing videos. 
 
+The video result of vehicle detection and tracking can be found with this [link](https://www.youtube.com/watch?v=yH9-gXWUrFE)
+
 ---
 
 ## Step 0: Load data
