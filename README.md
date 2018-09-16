@@ -1,5 +1,4 @@
 # Project: Vehicle Detection and Tracking
-### Udacity Self-Driving Car Engineer Nanodegree
 
 ---
 ## Summary of Project 
@@ -92,3 +91,7 @@ In order to smooth the detection and reduce the false detection, the heat maps a
 The presented algorithm works decent with detection of vehicle, however there are few challenges needs to be addressed in the future works. 
 a. The bounding box indicating the detection of vehicle still has some jitter, this is caused by the fact the edge of the heat map will change frame by frame. This could be addressed by increasing more levels of region and different levels of scales of search windown, which will potentially increase the density of the heat map and gives higher level of confidence of the exact dimenson of the occupation of the car in the scene. This inevitablly increase the computational burden and will needed to be rigrously explored with more powerful computational capability. 
 b. When muiltiple vehicle overlaps in a single frame, the classifier might be lump them together under current algorithm. To address this issue. The detectioin result can return certain information that is unique with detected car, for instance, color of the car, so that when creating heat map and labels these positive result can be seperated from each other. 
+
+## Disclaimer
+The project is part of study of the Nano-degree of Udacity "Self-Driving Car Engineer". The data is provided by Udacity, and the key implementation of the project is carried out by Yi Chen.
+
