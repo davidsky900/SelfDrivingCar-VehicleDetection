@@ -1,4 +1,4 @@
-# Project: Vehicle Detection and Tracking
+# Vehicle Detection and Tracking
 
 ---
 ## Summary of Project 
