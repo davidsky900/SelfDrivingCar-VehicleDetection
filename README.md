@@ -93,5 +93,5 @@ a. The bounding box indicating the detection of vehicle still has some jitter, t
 b. When muiltiple vehicle overlaps in a single frame, the classifier might be lump them together under current algorithm. To address this issue. The detectioin result can return certain information that is unique with detected car, for instance, color of the car, so that when creating heat map and labels these positive result can be seperated from each other. 
 
 ## Disclaimer
-The project is part of study of the Nano-degree of Udacity "Self-Driving Car Engineer". The data is provided by Udacity, and the key implementation of the project is carried out by Yi Chen.
+The project is part of study of the Nano-degree of Udacity "Self-Driving Car Engineer". The learning material and the data is provided by Udacity, and the key implementation of the project is carried out by Yi Chen.
 
